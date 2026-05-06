@@ -1,69 +1,40 @@
 # drift-mob-forms-vault
 
-`drift-mob-forms-vault` packages a practical mobile workflows exercise in Go. The emphasis is on deterministic behavior, a small public API, and examples that explain the tradeoffs.
+`drift-mob-forms-vault` keeps a focused Go implementation around mobile workflows. The project goal is to create a Go reference implementation for forms workflows, centered on constraint solving, bounded scenario files, and conflict explanations.
 
-## How I Read Drift Mob Forms Vault
+## Why I Keep It Small
 
-The useful thing to inspect here is how the same score rule is represented in code, metadata, and examples. If those three pieces disagree, the audit script should make the drift visible.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how form pressure and local state should influence a review result.
 
-## Problem Shape
+## Drift Mob Forms Vault Review Notes
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+`stale` and `stress` are the cases worth reading first. They show the optimistic and cautious ends of the fixture.
 
-## Main Behaviors
+## Included Behavior
 
-- Models local state with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep sync pressure changes visible in code review.
-- Includes extended examples for form constraints, including `surge` and `degraded`.
-- Documents offline paths tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
+- `fixtures/domain_review.csv` adds cases for form pressure and sync drift.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/drift-mob-forms-walkthrough.md` walks through the case spread.
+- The Go code includes a review path for `form pressure` and `sync drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
 ## Internal Model
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps local state, sync pressure, and form constraints in one explicit decision path. The threshold is 171, with risk penalty 6, latency penalty 3, and weight bonus 2. The Go layout uses small packages and table-oriented tests so the behavior stays easy to follow.
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `form pressure`, `sync drift`, `local state`, and `conflict cost`.
 
-## Repository Map
+The Go addition stays small enough to inspect in one sitting.
 
-- `policy`: Go package with the core model
-- `cmd`: small command entry point
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `go.mod`: Go module metadata
-
-## Run It Locally
-
-Use a normal shell with Go available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
-
-## How To Run It
+## Try It Locally
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
-
 ## Validation
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+The check exercises the source code and the review fixture. `stale` is the high score at 258; `stress` is the low score at 111.
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
+## Scope
 
-## Scenario Walkthrough
-
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
-
-## Known Edges
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Follow-Up Work
-
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add one more mobile workflows fixture that focuses on a malformed or borderline input.
+The repository is intentionally scoped to local checks. I would expand it by adding adversarial fixtures before adding features.

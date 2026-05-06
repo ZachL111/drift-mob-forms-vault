@@ -1,0 +1,73 @@
+{
+  "repo": "drift-mob-forms-vault",
+  "language": "Go",
+  "category": "Mobile workflows",
+  "goal": "Create a Go reference implementation for forms workflows, centered on constraint solving, bounded scenario files, and conflict explanations.",
+  "review_model": {
+    "terms": [
+      "form pressure",
+      "sync drift",
+      "local state",
+      "conflict cost"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "form pressure",
+      "signal": 77,
+      "slack": 52,
+      "drag": 30,
+      "confidence": 68,
+      "score": 184,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "sync drift",
+      "signal": 47,
+      "slack": 41,
+      "drag": 29,
+      "confidence": 63,
+      "score": 111,
+      "lane": "watch"
+    },
+    {
+      "name": "edge",
+      "focus": "local state",
+      "signal": 46,
+      "slack": 41,
+      "drag": 25,
+      "confidence": 87,
+      "score": 145,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "conflict cost",
+      "signal": 74,
+      "slack": 45,
+      "drag": 23,
+      "confidence": 68,
+      "score": 192,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "form pressure",
+      "signal": 91,
+      "slack": 25,
+      "drag": 8,
+      "confidence": 75,
+      "score": 258,
+      "lane": "ship"
+    }
+  ]
+}
