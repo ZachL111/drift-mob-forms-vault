@@ -1,0 +1,17 @@
+{
+  "repo": "drift-mob-forms-vault",
+  "thresholds": {
+    "signal": 2,
+    "slack": 2,
+    "confidence": 2,
+    "drag": 3,
+    "ship": 164,
+    "watch": 109
+  },
+  "terms": [
+    "form pressure",
+    "sync drift",
+    "local state",
+    "conflict cost"
+  ]
+}
